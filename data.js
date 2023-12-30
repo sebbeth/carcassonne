@@ -60,6 +60,8 @@ export function resetStack() {
     { data: "RRFCB" },
     { data: "RRRCB" },
   ];
+  // randomise the stack
+  STACK.sort(() => Math.random() - 0.5);
 }
 
 export const TILE_KEYS = {
@@ -74,17 +76,54 @@ export function hasCloister(tile) {
   return tile.data[TILE_KEYS.center] === "C";
 }
 
-export function getNextMoves(tiles) {
-  const adjacentTiles = tiles.map((tile) => getAdjacentTiles(tiles, tile));
-  const emptyAdjacentTiles = [];
-  adjacentTiles.forEach((tile) => {
-    tile.forEach((adjacentTile) => {
-      if (adjacentTile.data === "empty") {
-        emptyAdjacentTiles.push(adjacentTile);
+export function isLegalNextMove(tiles, tile, nextTile) {
+  const adjacentTiles = getAdjacentTileCoordinates(tile).flatMap((coordinate) =>
+    findTile(tiles, coordinate)
+  );
+  // Step through each adjacent tile direction,
+  // if there's a tile there, check if the next Tile can be placed next to it.
+  const northwardTile = adjacentTiles[TILE_KEYS.north];
+  if (
+    northwardTile &&
+    northwardTile.data[TILE_KEYS.south] !== nextTile.data[TILE_KEYS.north]
+  ) {
+    return false;
+  }
+  const eastwardTile = adjacentTiles[TILE_KEYS.east];
+  if (
+    eastwardTile &&
+    eastwardTile.data[TILE_KEYS.west] !== nextTile.data[TILE_KEYS.east]
+  ) {
+    return false;
+  }
+  const southwardTile = adjacentTiles[TILE_KEYS.south];
+  if (
+    southwardTile &&
+    southwardTile.data[TILE_KEYS.north] !== nextTile.data[TILE_KEYS.south]
+  ) {
+    return false;
+  }
+  const westwardTile = adjacentTiles[TILE_KEYS.west];
+  if (
+    westwardTile &&
+    westwardTile.data[TILE_KEYS.east] !== nextTile.data[TILE_KEYS.west]
+  ) {
+    return false;
+  }
+  return true;
+}
+
+export function getNextMoves(tiles, nextTile) {
+  return tiles
+    .flatMap((tile) => getAdjacentTiles(tiles, tile))
+    .filter((adjacentTile) => adjacentTile.data === "empty")
+    .map((tile) => {
+      if (isLegalNextMove(tiles, tile, nextTile)) {
+        tile.data = "legal";
+        return tile;
       }
+      return tile;
     });
-  });
-  return emptyAdjacentTiles;
 }
 
 export function getAdjacentTiles(tiles, tile) {
@@ -103,9 +142,9 @@ export function findTile(tiles, coordinate) {
 
 export function getAdjacentTileCoordinates(tile) {
   return [
-    { x: tile.x, y: tile.y + 1 },
-    { x: tile.x + 1, y: tile.y },
     { x: tile.x, y: tile.y - 1 },
+    { x: tile.x + 1, y: tile.y },
+    { x: tile.x, y: tile.y + 1 },
     { x: tile.x - 1, y: tile.y },
   ];
 }
