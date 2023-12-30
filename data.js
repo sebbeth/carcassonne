@@ -11,29 +11,54 @@ export function resetStack() {
     { data: "CCFCB" },
     { data: "CFFCB" },
     { data: "FFFCB" },
-    { data: "FFFCC" },
+    { data: "FFFCB" },
     { data: "FFFCB" },
     { data: "CCCCB" },
     { data: "FFFCB" },
     { data: "RRRCB" },
-    { data: "CCFCC" },
-    { data: "FFRCC" },
-    { data: "RRFCC" },
+    { data: "CCFCB" },
+    { data: "FFRCB" },
+    { data: "RRFCB" },
     { data: "CCRCB" },
     { data: "FFRCB" },
-    { data: "RRRCC" },
-    { data: "CCFCC" },
-    { data: "FFRCC" },
-    { data: "RRFCC" },
+    { data: "RRRCB" },
+    { data: "CCFCB" },
+    { data: "FFRCB" },
+    { data: "RRFCB" },
     { data: "CCRCB" },
     { data: "FFRCB" },
-    { data: "RRRCC" },
-    { data: "CCFCC" },
-    { data: "FFRCC" },
-    { data: "RRFCC" },
+    { data: "RRRCB" },
+    { data: "FFRFC" },
+    { data: "FFRFC" },
+    { data: "CCFCB" },
+    { data: "FFRCB" },
+    { data: "FFRFC" },
+    { data: "FFFCB" },
+    { data: "CCCCB" },
+    { data: "FFFCB" },
+    { data: "FFFFC" },
+    { data: "RRRCB" },
+    { data: "CCFCB" },
+    { data: "FFRCB" },
+    { data: "RRFCB" },
+    { data: "RRFCB" },
+    { data: "FFFFC" },
     { data: "CCRCB" },
     { data: "FFRCB" },
-    { data: "RRRCC" },
+    { data: "RRRCB" },
+    { data: "CCFCB" },
+    { data: "FFRCB" },
+    { data: "FFFFC" },
+    { data: "RRFCB" },
+    { data: "CCRCB" },
+    { data: "CCRCB" },
+    { data: "FFRCB" },
+    { data: "RRRCB" },
+    { data: "FFFFC" },
+    { data: "CCFCB" },
+    { data: "FFRCB" },
+    { data: "RRFCB" },
+    { data: "RRRCB" },
   ];
 }
 
@@ -83,4 +108,24 @@ export function getAdjacentTileCoordinates(tile) {
     { x: tile.x, y: tile.y - 1 },
     { x: tile.x - 1, y: tile.y },
   ];
+}
+
+export function rotateTile(tile, direction) {
+  let compassPoints = tile.data.slice(0, 4);
+  const remainingCharacters = tile.data.slice(4);
+  // rotate dcompassPoints
+  if (direction === "left") {
+    // take the first character of the string and move it to the end
+    const first = compassPoints[0];
+    compassPoints = compassPoints.slice(1) + first;
+  }
+  if (direction === "right") {
+    // take the last character of the string and move it to the beginning
+    const last = compassPoints[compassPoints.length - 1];
+    compassPoints = last + compassPoints.slice(0, compassPoints.length - 1);
+  }
+  return {
+    ...tile,
+    data: `${compassPoints}${remainingCharacters}`,
+  };
 }

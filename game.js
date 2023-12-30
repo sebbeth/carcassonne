@@ -5,6 +5,7 @@ import {
   hasCloister,
   placedTiles,
   resetStack,
+  rotateTile,
 } from "./data.js";
 const TILE_SIZE = 100;
 const PADDING = 2;
@@ -137,6 +138,18 @@ function renderTile(tile) {
   }
 }
 
+function renderButton(texture, position, callback) {
+  const button = new PIXI.Sprite(texture);
+  button.interactive = true;
+  button.x = position.x;
+  button.y = position.y;
+  // red
+  button.tint = 0xff0000;
+  button.buttonMode = true;
+  button.on("pointerdown", callback);
+  app.stage.addChild(button);
+}
+
 function renderTiles(tiles) {
   tiles.forEach((tile) => {
     renderTile(tile);
@@ -151,9 +164,31 @@ function renderNextTile(nextTile) {
   });
 }
 
+function renderButtons() {
+  renderButton(
+    PIXI.Texture.from("assets/left-arrow.png"),
+    { x: TILE_SIZE + 50, y: app.screen.height - 60 },
+    () => {
+      console.log("left");
+      STACK[STACK.length - 1] = rotateTile(STACK[STACK.length - 1], "left");
+      render();
+    }
+  );
+  renderButton(
+    PIXI.Texture.from("assets/right-arrow.png"),
+    { x: TILE_SIZE + 100, y: app.screen.height - 60 },
+    () => {
+      console.log("right");
+      STACK[STACK.length - 1] = rotateTile(STACK[STACK.length - 1], "right");
+      render();
+    }
+  );
+}
+
 function render() {
   app.stage.removeChildren();
   console.log({ tiles });
+  renderButtons();
   const nextMoves = getNextMoves(tiles);
   // concatonate tiles and nextMoves
   // last element of STACK
