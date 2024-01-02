@@ -1,3 +1,4 @@
+import tiles from "./tiles.js"
 export function gameTileFactory(parent, direction) {
   return {};
 }
@@ -7,59 +8,7 @@ export const placedTiles = [];
 export let STACK = [];
 
 export function resetStack() {
-  STACK = [
-    { data: "CCFCB" },
-    { data: "CFFCB" },
-    { data: "FFFCB" },
-    { data: "FFFCB" },
-    { data: "FFFCB" },
-    { data: "CCCCB" },
-    { data: "FFFCB" },
-    { data: "RRRCB" },
-    { data: "CCFCB" },
-    { data: "FFRCB" },
-    { data: "RRFCB" },
-    { data: "CCRCB" },
-    { data: "FFRCB" },
-    { data: "RRRCB" },
-    { data: "CCFCB" },
-    { data: "FFRCB" },
-    { data: "RRFCB" },
-    { data: "CCRCB" },
-    { data: "FFRCB" },
-    { data: "RRRCB" },
-    { data: "FFRFC" },
-    { data: "FFRFC" },
-    { data: "CCFCB" },
-    { data: "FFRCB" },
-    { data: "FFRFC" },
-    { data: "FFFCB" },
-    { data: "CCCCB" },
-    { data: "FFFCB" },
-    { data: "FFFFC" },
-    { data: "RRRCB" },
-    { data: "CCFCB" },
-    { data: "FFRCB" },
-    { data: "RRFCB" },
-    { data: "RRFCB" },
-    { data: "FFFFC" },
-    { data: "CCRCB" },
-    { data: "FFRCB" },
-    { data: "RRRCB" },
-    { data: "CCFCB" },
-    { data: "FFRCB" },
-    { data: "FFFFC" },
-    { data: "RRFCB" },
-    { data: "CCRCB" },
-    { data: "CCRCB" },
-    { data: "FFRCB" },
-    { data: "RRRCB" },
-    { data: "FFFFC" },
-    { data: "CCFCB" },
-    { data: "FFRCB" },
-    { data: "RRFCB" },
-    { data: "RRRCB" },
-  ];
+  STACK = [...tiles];
   // randomise the stack
   STACK.sort(() => Math.random() - 0.5);
 }
