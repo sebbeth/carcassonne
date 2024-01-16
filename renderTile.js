@@ -150,8 +150,8 @@ function renderSegments(tile, app) {
 export function renderTile(params) {
   const { app, tile, onClick, style } = params;
   if (tile.data === "empty") {
-    return;
   }
+
   if (tile.data === "legal") {
     addClickDetector(tile, onClick, app);
   }
